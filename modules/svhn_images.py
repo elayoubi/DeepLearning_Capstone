@@ -60,7 +60,7 @@ def separate_SVHN_images_labels ( mat_inpath, img_inpath, outpath):
 
 def download_and_extract_SVHN(data_kind, outpath):
     '''Download and extract SVHN from its URL. data_kind should be either "test" or "train" '''
-    
+    print ("Downloading %s" %data_kind)    
     fname=None
     if data_kind == 'test':
         urllib.urlretrieve("http://ufldl.stanford.edu/housenumbers/test.tar.gz", filename="%s/test.tar.gz" % outpath)
@@ -71,5 +71,8 @@ def download_and_extract_SVHN(data_kind, outpath):
     else:
         raise ValueError ('Unexpected data_kind=%s' % data_kind)
         
+    print ("Finished downloading %s" %data_kind)    
+    print ("Extracting %s" %data_kind)    
     with tarfile.open(fname, "r:gz") as f:
         f.extractall(outpath)
+    print ("Finished extracting %s" %data_kind)    
