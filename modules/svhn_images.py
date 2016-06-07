@@ -56,7 +56,7 @@ def download_and_extract_SVHN(data_kind, outpath, mat_file ):
 
         image_f_name = image[0][0]
 
-        if i % 1000 == 0 :
+        if i % 10000 == 0 :
             print ("Starting image %s " % image_f_name)
         
         count=count+1
@@ -84,7 +84,7 @@ def download_and_extract_SVHN(data_kind, outpath, mat_file ):
 def get_list_of_filenames(path, data_kind, batch_size, max_sequence_length=3) :
     '''Get list of numbers with max_sequence_length or less digits'''
     count = 0
-    images = np.array([f for f in os.listdir("%s/images/%s" % (path, data_kind))])
+    images = np.array([f for f in os.listdir("%s/images/%s" % (path, data_kind)) if 'png' in f])
 
     if len(images) < batch_size:
         batch_size=len(images)
