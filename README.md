@@ -9,6 +9,7 @@
 * tarfile
 * numpy 
 * PIL 
+* imp
 * matplotlib
 
 ## 2) Model files to download
