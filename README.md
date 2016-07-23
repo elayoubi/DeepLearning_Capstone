@@ -8,7 +8,7 @@
 * urllib
 * tarfile
 * numpy 
-* PIL 
+* PIL (via package pillow)
 * imp
 * matplotlib
 
