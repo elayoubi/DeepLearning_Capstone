@@ -2,13 +2,13 @@
 
 ## 1) Python modules used
 
-* tensorflow [installation instructions](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html) 
+* tensorflow v0.8 [installation instructions](https://www.tensorflow.org/versions/r0.8/get_started/os_setup.html) 
 * scipy
 * shutil 
 * urllib
 * tarfile
 * numpy 
-* PIL 
+* PIL (via package pillow)
 * imp
 * matplotlib
 
