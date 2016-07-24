@@ -10,21 +10,6 @@ number_of_features = INPUT_DIMENSION*INPUT_DIMENSION*CHANNELS
 
 class Model:
 
-   # def __init__(self):
-   #    self.tf_x = None
-   #    self.tf_y1 = None
-   #    self.tf_y2 = None
-   #    self.tf_y3 = None
-   #    
-   #    self.tf_length = None
-   #   
-   #    self.keep_prob= None
-
-   #    self.digit1_accuracy =None
-   #    self.digit2_accuracy =None
-   #    self.digit3_accuracy =None
-   #    self.optimiser = None
-
     def getGraph(self):
         g = tf.Graph()
         with g.as_default():
@@ -197,26 +182,26 @@ class Model:
             last_fc_layer_d3 = classifier_FC_d3(last_conv_layer, weights, biases, self.keep_prob)
             
             
-            digit1_logits = get_digit1_logits(last_fc_layer_d1, weights, biases)
-            digit2_logits = get_digit2_logits(last_fc_layer_d2, weights, biases)
-            digit3_logits = get_digit3_logits(last_fc_layer_d3, weights, biases)
+            self.digit1_logits = get_digit1_logits(last_fc_layer_d1, weights, biases)
+            self.digit2_logits = get_digit2_logits(last_fc_layer_d2, weights, biases)
+            self.digit3_logits = get_digit3_logits(last_fc_layer_d3, weights, biases)
             
-            digit1_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(digit1_logits, self.tf_y1))
-            digit2_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(digit2_logits, self.tf_y2))
-            digit3_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(digit3_logits, self.tf_y3))
+            digit1_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.digit1_logits, self.tf_y1))
+            digit2_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.digit2_logits, self.tf_y2))
+            digit3_loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(self.digit3_logits, self.tf_y3))
             
             overall_loss = digit1_loss + digit2_loss + digit3_loss
             
             self.optimiser = op_algorithm(starting_learning_rate).minimize( overall_loss) 
             
             
-            correct_digit1_prediction = tf.equal(tf.argmax(digit1_logits,1) , tf.argmax(self.tf_y1,1))
+            correct_digit1_prediction = tf.equal(tf.argmax(self.digit1_logits,1) , tf.argmax(self.tf_y1,1))
             self.digit1_accuracy = tf.reduce_mean(tf.cast(correct_digit1_prediction, "float"))
             
-            correct_digit2_prediction = tf.equal(tf.argmax(digit2_logits,1) , tf.argmax(self.tf_y2,1))
+            correct_digit2_prediction = tf.equal(tf.argmax(self.digit2_logits,1) , tf.argmax(self.tf_y2,1))
             self.digit2_accuracy = tf.reduce_mean(tf.cast(correct_digit2_prediction, "float"))
             
-            correct_digit3_prediction = tf.equal(tf.argmax(digit3_logits,1) , tf.argmax(self.tf_y3,1))
+            correct_digit3_prediction = tf.equal(tf.argmax(self.digit3_logits,1) , tf.argmax(self.tf_y3,1))
             self.digit3_accuracy = tf.reduce_mean(tf.cast(correct_digit3_prediction, "float"))
     
         return g
@@ -244,3 +229,11 @@ class Model:
     
         #print "Test : d1 acc=%0.3f d2 acc=%0.3f d3 acc=%0.3f" % (d1, d2, d3 )
         return d1, d2, d3
+
+    def get_logits(self,session, x, y1, y2, y3):
+            '''Returns the accuracy of digit1, digit2, and digit3'''
+            feed_dict = {self.tf_x: x, self.keep_prob:1.0, self.tf_y1: y1, self.tf_y2: y2, self.tf_y3: y3, self.keep_prob:1.0}
+            d1_logits, d2_logits, d3_logits = session.run([self.digit1_logits, self.digit2_logits, self.digit3_logits], \
+                            feed_dict=feed_dict )
+    
+            return d1_logits, d2_logits, d3_logits
